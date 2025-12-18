@@ -1,5 +1,5 @@
 
-import { useReactFlow } from '@xyflow/react';
+import { useReactFlow, useNodes } from '@xyflow/react';
 import { useAppStore } from '@/store/useAppStore';
 import type { NodeData } from '@/hooks/useMockApi';
 
@@ -19,9 +19,10 @@ const STATUS_COLORS = {
 
 export function InspectorPanel() {
   const { selectedNodeId, activeInspectorTab, setInspectorTab } = useAppStore();
-  const { getNode, setNodes } = useReactFlow();
+  const { setNodes } = useReactFlow();
+  const nodes = useNodes();
   
-  const node = selectedNodeId ? getNode(selectedNodeId) : null;
+  const node = selectedNodeId ? nodes.find(n => n.id === selectedNodeId) : null;
   const data = node?.data as NodeData | undefined;
 
   if (!node || !data) {
