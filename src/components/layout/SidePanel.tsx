@@ -2,6 +2,7 @@ import { useAppStore } from '@/store/useAppStore';
 import { Sheet, SheetContent, SheetTitle } from '@/components/ui/sheet';
 import { AppList } from './AppList';
 import { InspectorPanel } from '@/components/inspector/InspectorPanel';
+import { useMediaQuery } from '@/hooks/use-media-query';
 
 function PanelContent() {
   const { selectedNodeId } = useAppStore();
@@ -9,8 +10,10 @@ function PanelContent() {
   return selectedNodeId ? <InspectorPanel /> : <AppList />;
 }
 
+
 export function SidePanel() {
   const { isMobilePanelOpen, toggleMobilePanel } = useAppStore();
+  const isDesktop = useMediaQuery("(min-width: 768px)");
 
   return (
     <>
@@ -20,7 +23,7 @@ export function SidePanel() {
       </aside>
 
       {/* Mobile Drawer: Controlled by Store */}
-      <Sheet open={isMobilePanelOpen} onOpenChange={toggleMobilePanel}>
+      <Sheet open={isMobilePanelOpen && !isDesktop} onOpenChange={toggleMobilePanel}>
         <SheetContent side="right" className="w-[85vw] sm:w-[400px] p-0">
           <div className='sr-only'>
             <SheetTitle>Inspector</SheetTitle>
