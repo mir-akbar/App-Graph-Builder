@@ -1,10 +1,11 @@
-
 import { useReactFlow, useNodes } from '@xyflow/react';
 import { useAppStore } from '@/store/useAppStore';
 import type { NodeData } from '@/hooks/useMockApi';
+import { ArrowLeft } from 'lucide-react';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
@@ -15,10 +16,11 @@ const STATUS_COLORS = {
   healthy: "bg-green-500 hover:bg-green-600",
   degraded: "bg-yellow-500 hover:bg-yellow-600",
   down: "bg-red-500 hover:bg-red-600",
+  unknown: "bg-gray-500 hover:bg-gray-600",
 };
 
 export function InspectorPanel() {
-  const { selectedNodeId, activeInspectorTab, setInspectorTab } = useAppStore();
+  const { selectedNodeId, activeInspectorTab, setInspectorTab, selectNode } = useAppStore();
   const { setNodes } = useReactFlow();
   const nodes = useNodes();
   
@@ -27,7 +29,7 @@ export function InspectorPanel() {
 
   if (!node || !data) {
     return (
-      <div className="p-4 text-center text-muted-foreground">
+      <div className="h-full p-4 flex flex-col items-center justify-center text-center text-muted-foreground">
         Select a node to inspect properties.
       </div>
     );
@@ -44,14 +46,19 @@ export function InspectorPanel() {
     );
   };
 
-  const statusColor = STATUS_COLORS[data.status] || "bg-gray-500";
+  const statusColor = STATUS_COLORS[data.status as keyof typeof STATUS_COLORS] || STATUS_COLORS.unknown;
 
   return (
     <div className="flex flex-col h-full bg-background">
-      <div className="p-4 border-b flex items-center justify-between">
-        <div>
-          <h2 className="font-semibold text-lg">Inspector</h2>
-          <p className="text-xs text-muted-foreground font-mono">{node.id}</p>
+      <div className="p-4 border-b flex items-center justify-between gap-4">
+        <div className="flex items-center gap-2">
+            <Button variant="ghost" size="icon" className="h-8 w-8 -ml-2" onClick={() => selectNode(null)}>
+                <ArrowLeft className="size-4" />
+            </Button>
+            <div>
+            <h2 className="font-semibold text-lg leading-none">Inspector</h2>
+            <p className="text-xs text-muted-foreground font-mono mt-1">{node.id}</p>
+            </div>
         </div>
         <Badge className={`${statusColor} capitalize`}>
           {data.status}
