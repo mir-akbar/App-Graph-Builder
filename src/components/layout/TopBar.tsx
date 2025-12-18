@@ -1,7 +1,10 @@
-import { Bell, Search } from 'lucide-react';
+import { Bell, Search, PanelRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useAppStore } from '@/store/useAppStore';
 
 export function TopBar() {
+  const { toggleMobilePanel, isMobilePanelOpen } = useAppStore();
+
   return (
     <header className="h-14 border-b px-4 flex items-center justify-between bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
       <div className="flex items-center gap-2">
@@ -10,6 +13,14 @@ export function TopBar() {
       </div>
 
       <div className="flex items-center gap-2">
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          className="text-muted-foreground md:hidden"
+          onClick={() => toggleMobilePanel(!isMobilePanelOpen)}
+        >
+          <PanelRight className="size-5" />
+        </Button>
         <Button variant="ghost" size="icon" className="text-muted-foreground">
           <Search className="size-5" />
         </Button>
