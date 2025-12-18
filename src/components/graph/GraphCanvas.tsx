@@ -17,6 +17,12 @@ import { useAppStore } from '@/store/useAppStore';
 import { useAppGraph } from '@/hooks/useMockApi';
 import { Loader2 } from 'lucide-react';
 
+import { ServiceNode } from './ServiceNode';
+
+const nodeTypes = {
+  service: ServiceNode,
+};
+
 export function GraphCanvas() {
   const { selectedAppId, selectNode, selectedNodeId } = useAppStore();
   const { data, isLoading } = useAppGraph(selectedAppId);
@@ -70,6 +76,7 @@ export function GraphCanvas() {
       <ReactFlow
         nodes={nodes.map(n => ({ ...n, selected: n.id === selectedNodeId }))} // Force selection style from store
         edges={edges}
+        nodeTypes={nodeTypes}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}

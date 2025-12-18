@@ -12,6 +12,11 @@ export interface NodeData extends Record<string, unknown> {
     label: string;
     status: 'healthy' | 'degraded' | 'down';
     replicas: number;
+    cpu: number;
+    memory: number;
+    disk: number;
+    region: string;
+    vendor: 'aws' | 'gcp' | 'azure';
     description?: string;
 }
 
@@ -26,20 +31,50 @@ const MOCK_NODES_TEMPLATE: Node<NodeData>[] = [
     {
         id: 'node-1',
         position: { x: 100, y: 100 },
-        data: { label: 'API Gateway', status: 'healthy', replicas: 3, description: 'Entry point for all traffic' },
-        type: 'default',
+        data: {
+            label: 'API Gateway',
+            status: 'healthy',
+            replicas: 3,
+            description: 'Entry point for all traffic',
+            cpu: 0.5,
+            memory: 1,
+            disk: 20,
+            region: 'us-east-1',
+            vendor: 'aws'
+        },
+        type: 'service',
     },
     {
         id: 'node-2',
-        position: { x: 300, y: 200 },
-        data: { label: 'Auth Service', status: 'degraded', replicas: 2, description: 'Handles tokens and sessions' },
-        type: 'default',
+        position: { x: 500, y: 300 },
+        data: {
+            label: 'Auth Service',
+            status: 'degraded',
+            replicas: 2,
+            description: 'Handles tokens and sessions',
+            cpu: 0.2,
+            memory: 0.5,
+            disk: 10,
+            region: 'us-west-2',
+            vendor: 'aws'
+        },
+        type: 'service',
     },
     {
         id: 'node-3',
-        position: { x: 500, y: 100 },
-        data: { label: 'Database', status: 'healthy', replicas: 1, description: 'Primary PostgreSQL cluster' },
-        type: 'default',
+        position: { x: 900, y: 100 },
+        data: {
+            label: 'Database',
+            status: 'healthy',
+            replicas: 1,
+            description: 'Primary PostgreSQL cluster',
+            cpu: 2,
+            memory: 8,
+            disk: 100,
+            region: 'eu-central-1',
+            vendor: 'aws'
+        },
+        type: 'service',
     },
 ];
 
